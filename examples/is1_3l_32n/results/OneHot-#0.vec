@@ -1,0 +1,224 @@
+version 2
+run OneHot-0-20190817-20:59:29-25674
+attr configname OneHot
+attr datetime 20190817-20:59:29
+attr experiment OneHot
+attr inifile is1_3l_32n.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network ib_model.examples.is1_3l_32n.is1_3l_32n
+attr processid 25674
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param **H_1_U1.gen.dstSeqIndex 0
+param **H_2_U1.gen.dstSeqIndex 1
+param **H_3_U1.gen.dstSeqIndex 2
+param **H_4_U1.gen.dstSeqIndex 3
+param **H_5_U1.gen.dstSeqIndex 4
+param **H_6_U1.gen.dstSeqIndex 5
+param **H_7_U1.gen.dstSeqIndex 6
+param **H_8_U1.gen.dstSeqIndex 7
+param **H_9_U1.gen.dstSeqIndex 8
+param **H_10_U1.gen.dstSeqIndex 9
+param **H_11_U1.gen.dstSeqIndex 10
+param **H_12_U1.gen.dstSeqIndex 11
+param **H_13_U1.gen.dstSeqIndex 12
+param **H_14_U1.gen.dstSeqIndex 13
+param **H_15_U1.gen.dstSeqIndex 14
+param **H_16_U1.gen.dstSeqIndex 15
+param **H_17_U1.gen.dstSeqIndex 16
+param **H_18_U1.gen.dstSeqIndex 17
+param **H_19_U1.gen.dstSeqIndex 18
+param **H_20_U1.gen.dstSeqIndex 19
+param **H_21_U1.gen.dstSeqIndex 20
+param **H_22_U1.gen.dstSeqIndex 21
+param **H_23_U1.gen.dstSeqIndex 22
+param **H_24_U1.gen.dstSeqIndex 23
+param **H_25_U1.gen.dstSeqIndex 24
+param **H_26_U1.gen.dstSeqIndex 25
+param **H_27_U1.gen.dstSeqIndex 26
+param **H_28_U1.gen.dstSeqIndex 27
+param **H_29_U1.gen.dstSeqIndex 28
+param **H_30_U1.gen.dstSeqIndex 29
+param **H_31_U1.gen.dstSeqIndex 30
+param **H_32_U1.gen.dstSeqIndex 31
+param **.app.dstSeqVecFile "\"32n_1hot.dstSeq\""
+param **.width 4
+param **.speed 10Gbps
+param **.maxVL 0
+param **.sink.hiccupDuration 0.001us
+param **.sink.hiccupDelay 10000us
+param **.sink.repFirstPackets 0
+param **.obuf.credMinTime 0.256us
+param **SW**.obuf.size 78
+param **H_**.obuf.size 36
+param **.obuf.width 4
+param **.ibuf.maxStatic* 200
+param **.ibuf.lossyMode false
+param **.ISWDelay 50ns
+param **.VSWDelay 50ns
+param **.vlarb.width 4
+param **SW**.vlarb.coreFreq 250MHz
+param **H_**.vlarb.coreFreq 200MHz
+param **SW**.vlarb.busWidth 24B
+param **H_**.vlarb.busWidth 16B
+param **.vlarb.vlHighLimit 16
+param **.vlarb.highVLArbEntries "\"0:1 1:20 2:40 3:80\""
+param **.vlarb.lowVLArbEntries "\"0:1 1:20 2:40 3:80\""
+param **.vlarb.useFCFSRQArb false
+param **.pktfwd.AdaptMode "\"none\""
+param **.pktfwd.LIDBindTime 2us
+param **.pktfwd.TQBusy1Thd 20
+param **.pktfwd.TQBusy2Thd 40
+param **.pktfwd.TQBusy3Thd 80
+param **.pktfwd.ARAdaptThd 4
+param **.pktfwd.OPSelAlgo "\"greedy\""
+param **.pktfwd.GreedyRandSize 3
+param **.pktfwd.statRepTime 10us
+param **.pktfwd.OPSelOffsetByDLID 0
+param **.gen.genDlyPerByte 0.3077ns
+param **.sink.popDlyPerByte 0.3077ns
+param **.dstMode "\"seq_loop\""
+param **H**.dstLid 1
+param **H_1_U1.app.dstSeqVecIdx 0
+param **H_2_U1.app.dstSeqVecIdx 1
+param **H_3_U1.app.dstSeqVecIdx 2
+param **H_4_U1.app.dstSeqVecIdx 3
+param **H_5_U1.app.dstSeqVecIdx 4
+param **H_6_U1.app.dstSeqVecIdx 5
+param **H_7_U1.app.dstSeqVecIdx 6
+param **H_8_U1.app.dstSeqVecIdx 7
+param **H_9_U1.app.dstSeqVecIdx 8
+param **H_10_U1.app.dstSeqVecIdx 9
+param **H_11_U1.app.dstSeqVecIdx 10
+param **H_12_U1.app.dstSeqVecIdx 11
+param **H_13_U1.app.dstSeqVecIdx 12
+param **H_14_U1.app.dstSeqVecIdx 13
+param **H_15_U1.app.dstSeqVecIdx 14
+param **H_16_U1.app.dstSeqVecIdx 15
+param **H_17_U1.app.dstSeqVecIdx 16
+param **H_18_U1.app.dstSeqVecIdx 17
+param **H_19_U1.app.dstSeqVecIdx 18
+param **H_20_U1.app.dstSeqVecIdx 19
+param **H_21_U1.app.dstSeqVecIdx 20
+param **H_22_U1.app.dstSeqVecIdx 21
+param **H_23_U1.app.dstSeqVecIdx 22
+param **H_24_U1.app.dstSeqVecIdx 23
+param **H_25_U1.app.dstSeqVecIdx 24
+param **H_26_U1.app.dstSeqVecIdx 25
+param **H_27_U1.app.dstSeqVecIdx 26
+param **H_28_U1.app.dstSeqVecIdx 27
+param **H_29_U1.app.dstSeqVecIdx 28
+param **H_30_U1.app.dstSeqVecIdx 29
+param **H_31_U1.app.dstSeqVecIdx 30
+param **H_32_U1.app.dstSeqVecIdx 31
+param **.app.dstSeqVecFile "\"is1_3l_32n.dstSeq\""
+param **.msgLenMode "\"param\""
+param **.msgMtuLen 2048B
+param **.msgLength 131072B
+param **.msgLenSet "\"1152 2048 4096\""
+param **.msgLenProb "\"1 1 1 1\""
+param **.msg2msgGap 1ns
+param **.msgSQ 0
+param **.startStatCol 100us
+param **.maxContPkts 10
+param **.popDlyPerByte 0.25ns
+param **.maxQueuedPerVL 4
+param **.flit2FlitGap 0.001ns
+param **.pkt2PktGap 0.001ns
+param **.pktFwdType "\"Pktfwd\""
+param **.pktfwd.fdbsVecFile "\"is1_3l_32n.fdbs\""
+param **.SW_L0_0_0_U1.pktfwd.fdbIndex 0
+param **.SW_L0_0_1_U1.pktfwd.fdbIndex 1
+param **.SW_L0_1_0_U1.pktfwd.fdbIndex 2
+param **.SW_L0_1_1_U1.pktfwd.fdbIndex 3
+param **.SW_L1_0_0_U1.pktfwd.fdbIndex 4
+param **.SW_L1_0_1_U1.pktfwd.fdbIndex 5
+param **.SW_L1_1_0_U1.pktfwd.fdbIndex 6
+param **.SW_L1_1_1_U1.pktfwd.fdbIndex 7
+param **.SW_L1_2_0_U1.pktfwd.fdbIndex 8
+param **.SW_L1_2_1_U1.pktfwd.fdbIndex 9
+param **.SW_L1_3_0_U1.pktfwd.fdbIndex 10
+param **.SW_L1_3_1_U1.pktfwd.fdbIndex 11
+param **.SW_L2_0_0_U1.pktfwd.fdbIndex 12
+param **.SW_L2_0_1_U1.pktfwd.fdbIndex 13
+param **.SW_L2_1_0_U1.pktfwd.fdbIndex 14
+param **.SW_L2_1_1_U1.pktfwd.fdbIndex 15
+param **.SW_L2_2_0_U1.pktfwd.fdbIndex 16
+param **.SW_L2_2_1_U1.pktfwd.fdbIndex 17
+param **.SW_L2_3_0_U1.pktfwd.fdbIndex 18
+param **.SW_L2_3_1_U1.pktfwd.fdbIndex 19
+param **ibuf.maxBeingSent 3
+param **ibuf.maxStatic0 800
+param **ibuf.totalBufferSize 1000
+param **.repFirstPackets 0
+
+vector 0 is1_3l_32n.H_1_U1.app Dst-Sequence-Index ETV
+vector 1 is1_3l_32n.H_10_U1.app Dst-Sequence-Index ETV
+vector 2 is1_3l_32n.H_11_U1.app Dst-Sequence-Index ETV
+vector 3 is1_3l_32n.H_12_U1.app Dst-Sequence-Index ETV
+vector 4 is1_3l_32n.H_13_U1.app Dst-Sequence-Index ETV
+vector 5 is1_3l_32n.H_14_U1.app Dst-Sequence-Index ETV
+vector 6 is1_3l_32n.H_15_U1.app Dst-Sequence-Index ETV
+vector 7 is1_3l_32n.H_16_U1.app Dst-Sequence-Index ETV
+vector 8 is1_3l_32n.H_17_U1.app Dst-Sequence-Index ETV
+vector 9 is1_3l_32n.H_18_U1.app Dst-Sequence-Index ETV
+vector 10 is1_3l_32n.H_19_U1.app Dst-Sequence-Index ETV
+vector 11 is1_3l_32n.H_2_U1.app Dst-Sequence-Index ETV
+vector 12 is1_3l_32n.H_20_U1.app Dst-Sequence-Index ETV
+vector 13 is1_3l_32n.H_21_U1.app Dst-Sequence-Index ETV
+vector 14 is1_3l_32n.H_22_U1.app Dst-Sequence-Index ETV
+vector 15 is1_3l_32n.H_23_U1.app Dst-Sequence-Index ETV
+vector 16 is1_3l_32n.H_24_U1.app Dst-Sequence-Index ETV
+vector 17 is1_3l_32n.H_25_U1.app Dst-Sequence-Index ETV
+vector 18 is1_3l_32n.H_26_U1.app Dst-Sequence-Index ETV
+vector 19 is1_3l_32n.H_27_U1.app Dst-Sequence-Index ETV
+vector 20 is1_3l_32n.H_28_U1.app Dst-Sequence-Index ETV
+vector 21 is1_3l_32n.H_29_U1.app Dst-Sequence-Index ETV
+vector 22 is1_3l_32n.H_3_U1.app Dst-Sequence-Index ETV
+vector 23 is1_3l_32n.H_30_U1.app Dst-Sequence-Index ETV
+vector 24 is1_3l_32n.H_31_U1.app Dst-Sequence-Index ETV
+vector 25 is1_3l_32n.H_32_U1.app Dst-Sequence-Index ETV
+vector 26 is1_3l_32n.H_4_U1.app Dst-Sequence-Index ETV
+vector 27 is1_3l_32n.H_5_U1.app Dst-Sequence-Index ETV
+vector 28 is1_3l_32n.H_6_U1.app Dst-Sequence-Index ETV
+vector 29 is1_3l_32n.H_7_U1.app Dst-Sequence-Index ETV
+vector 30 is1_3l_32n.H_8_U1.app Dst-Sequence-Index ETV
+vector 31 is1_3l_32n.H_9_U1.app Dst-Sequence-Index ETV
+0	1	0	1
+1	3	0	1
+2	5	0	1
+3	7	0	1
+4	9	0	1
+5	11	0	1
+6	13	0	1
+7	15	0	1
+8	17	0	1
+9	19	0	1
+10	21	0	1
+11	23	0	1
+12	25	0	1
+13	27	0	1
+14	29	0	1
+15	31	0	1
+16	33	0	1
+17	35	0	1
+18	37	0	1
+19	39	0	1
+20	41	0	1
+21	43	0	1
+22	45	0	1
+23	47	0	1
+24	49	0	1
+25	51	0	1
+26	53	0	1
+27	55	0	1
+28	57	0	1
+29	59	0	1
+30	61	0	1
+31	63	0	1
+

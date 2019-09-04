@@ -1,0 +1,11 @@
+This directory tree hold an InfiniBand model with support for 
+IB flow control scheme, Arbitration over multiple VLs and routing 
+based on Linear Forwarding Tables.
+
+To run it:
+1. opp_makemake -f --deep -O out -X utils
+2. make
+
+cd into the example dir and look for a */README
+
+For more info regarding each one of the model modules see the doc directory

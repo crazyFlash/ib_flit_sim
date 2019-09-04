@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if test $# != 2; then
+    echo "Usage: $0 num-stages num-nodes"
+    exit 1
+fi
+dir=`dirname $0`
+stages=$1
+hosts=$2
+out="rand_perm_${stages}_stages_${hosts}_nodes.dstSeq"
+
+for i in `seq 1 $stages`; do
+    echo "generating stage: $i"
+    if test $i = 1; then 
+	$dir/genRandPerm $hosts > $out
+    else
+	mv $out $out.s
+	$dir/genRandPerm $hosts > $out.$i
+	join $out.s $out.$i > $out
+	\rm $out.$i $out.s
+    fi
+done
+echo "written file: $out"

@@ -1,0 +1,28 @@
+#!/bin/sh
+# the next line restarts using tclsh \
+	exec tclsh "$0" "$@"
+
+proc usage {} {
+	global argv0
+	puts "Usage: $argv0 <num nodes>"
+	puts "Generates a random single stage dstSeq to stdout"
+	exit 1
+}
+
+if {([llength $argv] < 1)} {usage}
+
+set nodes       [lindex $argv 0]
+
+# generate the indexies
+for {set i 1} {$i <= $nodes} {incr i} {
+	lappend idxs [list $i [expr rand()]]
+}
+
+set src 0
+foreach dstNRnd [lsort -index 1 -real $idxs] {
+	set dst [lindex $dstNRnd 0]
+	puts "$src: $dst"
+	incr src
+}
+
+exit 0

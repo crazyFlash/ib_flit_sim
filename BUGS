@@ -1,0 +1,10 @@
+When the 1.0/coerFreq/busWidth < VSWDelay the Arb is not able to track 
+correctly the OBUF credits and the OBUF explodes...
+A fix would be to add counter in the OBUF of used credits and then 
+let the VLA to incr when a credit is post to pass teh switch and decrement 
+by the OBUF on send.
+
+But I think that since OBUF needs reveisit - since it us not a fixed size buf 
+and the arb crietria is actually never filling more than N? MTUs it is better
+to stop counting credits and do the full change
+

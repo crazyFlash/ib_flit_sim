@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# create a tar.gz of the release
+origDir=`pwd`
+tmpDir=/tmp/ib_flit_sim.$$
+mkdir -p $tmpDir
+D=`date +%d_%m_%g`
+cpDir=$tmpDir/ib_flit_sim.$D
+mkdir -p $cpDir
+tarFileName=ib_flit_sim.$D.tgz
+
+echo Releasing in $tmpDir
+
+# get the ignored files/dirs
+ignore=`svn propget -R do-not-release`
+
+# get all the files
+#find . \( -name .svn -prune \) -o \( -name "*.cc" -o -name "*.h" -o -name "*.ned" -o -name "*.msg" -o -name "pack*" \) -print > $tmpDir/files
+echo Copying files ...
+svn stat -v | grep -v ^\? | awk '{print $NF}' > $tmpDir/files
+
+# filter out any of the do-not-release items
+echo Filtering files marked by property: do-not-release ...
+nIgnore=0
+for i in $ignore; do
+   grep -v $i $tmpDir/files > $tmpDir/files.x
+   mv -f $tmpDir/files.x $tmpDir/files
+   nIgnore=`expr $nIgnore + 1`
+done
+echo "Filtered $nIgnore files"
+grep -v _m\. $tmpDir/files > $tmpDir/files.x
+mv -f $tmpDir/files.x $tmpDir/files
+
+# copy the files
+for i in `cat $tmpDir/files`; do
+   d=`dirname $i`
+   mkdir -p $cpDir/$d
+   if ! test -d $i; then
+      cp -p $i $cpDir/$i
+   fi
+done
+
+cd $tmpDir
+tar cfz $tarFileName ib_flit_sim.$D
+
+echo Building project ...
+cd ib_flit_sim.$D
+opp_makemake -f --deep -O out -o ib_flit_sim > /dev/null
+make > /dev/null
+
+if test $? = 0; then
+   echo Built IB Flit Level distribution into $tarFileName
+   mv ../$tarFileName $origDir
+else 
+   echo DIST FAILED
+fi
+echo Cleaning up
+cd $origDir
+rm -rf $tmpDir

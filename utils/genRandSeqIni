@@ -1,0 +1,30 @@
+#!/bin/sh
+# the next line restarts using tclsh \
+	exec tclsh "$0" "$@"
+
+proc usage {} {
+	global argv0
+	puts "Usage: $argv0 <num nodes>"
+	puts "Generates a random ini for dstSeq to stdout"
+	exit 1
+}
+
+if {([llength $argv] < 1)} {usage}
+
+set nodes       [lindex $argv 0]
+
+# generate the indexies
+for {set i 0} {$i < $nodes} {incr i} {
+	lappend idxs $i
+}
+
+puts "\[General\]\n"
+
+for {set i 1} {$i <= $nodes} {incr i} {
+	set idx [expr int(rand()*[llength $idxs])]
+	set n [lindex $idxs $idx]
+	set idxs [lreplace $idxs $idx $idx]
+	
+	puts "**H_${i}_U1.app.dstSeqVecIdx = $n"
+}	
+exit 0

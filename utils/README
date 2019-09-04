@@ -1,0 +1,3 @@
+This directory holds some utility classes and executables:
+
+ibdm2ned - convert IBDM topologyy to this model for simulation (generating NED and FDBs)

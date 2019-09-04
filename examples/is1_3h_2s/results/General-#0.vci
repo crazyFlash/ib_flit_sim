@@ -1,0 +1,151 @@
+                                                                
+version 2
+run General-0-20190904-11:39:19-1204
+attr configname General
+attr datetime 20190904-11:39:19
+attr experiment General
+attr inifile is1_3h_2s.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network ib_model.examples.is1_3h_2s.p2p_3h_2s
+attr processid 1204
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param **.startStatCol 200us
+param **.flitSize 64B
+param **.dstMode "\"param\""
+param **H_1**.dstLid 3
+param **H_2**.dstLid 0
+param **H_3**.dstLid 0
+param **.app.dstSeqVecFile "\"\""
+param **.app.dstSeqVecIdx 0
+param **.msgLenMode "\"param\""
+param **.msgMtuLen 1500B
+param **.msgLength 16384B
+param **.msgLenSet "\"1152 2048 4096\""
+param **.msgLenProb "\"1 1 1 1\""
+param **.msg2msgGap 1us
+param **.msgSQ 0
+param **.maxContPkts 10
+param **.popDlyPerByte 0.25ns
+param **.genDlyPerByte 0.25ns
+param **.maxQueuedPerVL 4
+param **.flit2FlitGap 0.001ns
+param **.pkt2PktGap 0.001ns
+param **ibuf.maxBeingSent 3
+param **ibuf.maxStatic0 200
+param **ibuf.totalBufferSize 1000
+param **.SW**.fdbsVecFile "\"3h_2s.fdbs\""
+param **.SW_1**.fdbIndex 0
+param **.SW_2**.fdbIndex 1
+param **.pktFwdType "\"Pktfwd\""
+param **.width 4
+param **.speed 10Gbps
+param **.maxVL 0
+param **.sink.hiccupDuration 0.001us
+param **.sink.hiccupDelay 10000us
+param **.sink.repFirstPackets 0
+param **.obuf.credMinTime 0.256us
+param **SW**.obuf.size 78
+param **H_**.obuf.size 36
+param **.obuf.width 4
+param **.ibuf.maxStatic* 200
+param **.ibuf.lossyMode false
+param **.ISWDelay 50ns
+param **.VSWDelay 50ns
+param **.vlarb.width 4
+param **SW**.vlarb.coreFreq 250MHz
+param **H_**.vlarb.coreFreq 200MHz
+param **SW**.vlarb.busWidth 24B
+param **H_**.vlarb.busWidth 16B
+param **.vlarb.vlHighLimit 16
+param **.vlarb.highVLArbEntries "\"0:1 1:20 2:40 3:80\""
+param **.vlarb.lowVLArbEntries "\"0:1 1:20 2:40 3:80\""
+param **.vlarb.useFCFSRQArb false
+param **.pktfwd.AdaptMode "\"none\""
+param **.pktfwd.LIDBindTime 2us
+param **.pktfwd.TQBusy1Thd 20
+param **.pktfwd.TQBusy2Thd 40
+param **.pktfwd.TQBusy3Thd 80
+param **.pktfwd.ARAdaptThd 4
+param **.pktfwd.OPSelAlgo "\"greedy\""
+param **.pktfwd.GreedyRandSize 3
+param **.pktfwd.statRepTime 10us
+param **.pktfwd.OPSelOffsetByDLID 0
+param **.gen.genDlyPerByte 0.3077ns
+param **.sink.popDlyPerByte 0.3077ns
+
+vector 0 p2p_3h_2s.SW_2.isw_port[0].vlarb "free credits on VL0" ETV
+vector 1 p2p_3h_2s.SW_2.isw_port[0].vlarb "Binary coded VL's with data" ETV
+vector 2 p2p_3h_2s.SW_2.isw_port[0].vlarb "arbitrated VL" ETV
+vector 3 p2p_3h_2s.SW_2.isw_port[1].vlarb "free credits on VL0" ETV
+vector 4 p2p_3h_2s.SW_2.isw_port[1].vlarb "Binary coded VL's with data" ETV
+vector 5 p2p_3h_2s.SW_2.isw_port[1].vlarb "arbitrated VL" ETV
+vector 6 p2p_3h_2s.SW_1.isw_port[0].vlarb "free credits on VL0" ETV
+vector 7 p2p_3h_2s.SW_1.isw_port[0].vlarb "Binary coded VL's with data" ETV
+vector 8 p2p_3h_2s.SW_1.isw_port[0].vlarb "arbitrated VL" ETV
+vector 9 p2p_3h_2s.H_3.vlarb "free credits on VL0" ETV
+vector 10 p2p_3h_2s.H_3.vlarb "Binary coded VL's with data" ETV
+vector 11 p2p_3h_2s.H_3.vlarb "arbitrated VL" ETV
+vector 12 p2p_3h_2s.SW_2.isw_port[2].vlarb "free credits on VL0" ETV
+vector 13 p2p_3h_2s.SW_2.isw_port[2].vlarb "Binary coded VL's with data" ETV
+vector 14 p2p_3h_2s.SW_2.isw_port[2].vlarb "arbitrated VL" ETV
+vector 15 p2p_3h_2s.H_1.vlarb "free credits on VL0" ETV
+vector 16 p2p_3h_2s.H_1.vlarb "Binary coded VL's with data" ETV
+vector 17 p2p_3h_2s.H_1.vlarb "arbitrated VL" ETV
+vector 18 p2p_3h_2s.H_2.vlarb "free credits on VL0" ETV
+vector 19 p2p_3h_2s.H_2.vlarb "Binary coded VL's with data" ETV
+vector 20 p2p_3h_2s.H_2.vlarb "arbitrated VL" ETV
+vector 21 p2p_3h_2s.SW_1.isw_port[1].vlarb "free credits on VL0" ETV
+vector 22 p2p_3h_2s.SW_1.isw_port[1].vlarb "Binary coded VL's with data" ETV
+vector 23 p2p_3h_2s.SW_1.isw_port[1].vlarb "arbitrated VL" ETV
+vector 24 p2p_3h_2s.H_1.obuf "Queue Depth" ETV
+vector 25 p2p_3h_2s.H_2.obuf "Queue Depth" ETV
+vector 26 p2p_3h_2s.H_3.obuf "Queue Depth" ETV
+vector 27 p2p_3h_2s.SW_1.isw_port[0].obuf "Queue Depth" ETV
+vector 28 p2p_3h_2s.SW_1.isw_port[1].obuf "Queue Depth" ETV
+vector 29 p2p_3h_2s.SW_2.isw_port[0].obuf "Queue Depth" ETV
+vector 30 p2p_3h_2s.SW_2.isw_port[1].obuf "Queue Depth" ETV
+vector 31 p2p_3h_2s.SW_2.isw_port[2].obuf "Queue Depth" ETV
+vector 32 p2p_3h_2s.SW_2.isw_port[0].ibuf "static credits used" ETV
+vector 33 p2p_3h_2s.SW_1.isw_port[1].ibuf "static credits used" ETV
+vector 34 p2p_3h_2s.H_3.ibuf "static credits used" ETV
+0	4580 8279 37 118356 0.000000001 0.000088582 313 200 200 62600 12520000
+1	12859 7653 37 118356 0.000000001 0.000088582 313 0 0 0 0
+2	20512 7966 37 118356 0.000000001 0.000088582 313 -1 -1 -313 313
+3	28478 3900 39 118357 0.000000001 0.000088582 157 200 200 31400 6280000
+4	32378 3586 39 118357 0.000000001 0.000088582 157 0 0 0 0
+5	35964 3743 39 118357 0.000000001 0.000088582 157 -1 -1 -157 157
+6	39707 202671 41 118350 0.000000001 0.000088582 7669 184 200 1467532 280940072
+7	242378 191072 41 118350 0.000000001 0.000088582 7669 0 10 37390 373900
+8	433450 93939 41 118350 0.000000001 0.000088582 3916 -1 10 37213 374077
+9	527389 4374 43 117837 0.000000001 0.000088261429 156 200 200 31200 6240000
+10	531763 4218 43 117837 0.000000001 0.000088261429 156 0 0 0 0
+11	535981 4374 43 117837 0.000000001 0.000088261429 156 -1 -1 -156 156
+12	540355 210664 45 118351 0.000000001 0.000088582 7682 182 200 1453748 275228802
+13	751019 199044 45 118351 0.000000001 0.000088582 7682 0 10 37440 374400
+14	950063 98207 45 118351 0.000000001 0.000088582 3931 -1 10 37253 374587
+15	1048270 97458 47 118307 0.000000001 0.000088572 3777 185 200 724148 138892244
+16	1145728 93650 47 118307 0.000000001 0.000088572 3777 0 10 37460 374600
+17	1239378 93681 47 118307 0.000000001 0.000088572 3777 -1 10 37429 374631
+18	1333059 23 49 49 0.000000001 0.000000001 1 200 200 200 40000
+19	1333082 21 49 49 0.000000001 0.000000001 1 0 0 0 0
+20	1333103 22 49 49 0.000000001 0.000000001 1 -1 -1 -1 1
+21	1333125 8537 51 117753 0.000000001 0.000088202 311 200 200 62200 12440000
+22	1341662 7915 51 117753 0.000000001 0.000088202 311 0 0 0 0
+23	1349577 8226 51 117753 0.000000001 0.000088202 311 -1 -1 -311 311
+24	1357803 108282 56 118349 0.000000002179 0.000088581429 4034 0 1 60 60
+25	1466085 8344 57 118330 0.000000002179 0.000088577 347 0 0 0 0
+26	1474429 9262 58 118344 0.000000002179 0.000088578179 347 0 0 0 0
+27	1483691 108101 59 118347 0.000000002179 0.000088581429 4027 0 1 60 60
+28	1591792 9262 60 118345 0.000000002179 0.000088578179 347 0 0 0 0
+29	1601054 9259 61 118346 0.000000002179 0.000088578179 347 0 0 0 0
+30	1610313 8344 62 118334 0.000000002179 0.000088577 347 0 0 0 0
+31	1618657 108178 63 118348 0.000000002179 0.000088581429 4030 0 1 60 60
+32	1726835 89310 156 118353 0.000001066 0.000088582 3744 1 3 11190 33514
+33	1816145 89212 230 118352 0.000001166 0.000088582 3739 1 3 11175 33469
+34	1905357 89055 302 118328 0.000001232 0.000088576 3736 1 1 3736 3736

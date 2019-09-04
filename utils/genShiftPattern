@@ -1,0 +1,57 @@
+#!/bin/sh
+# the next line restarts using tclsh \
+	exec tclsh "$0" "$@"
+
+proc usage {} {
+	global argv0
+	puts "Usage: $argv0 <vecFilename> <paramPrefix> <num nodes> \[num stages\]"
+	puts "Generates a vector file with the given patterns and INI to stdout"
+	exit 1
+}
+
+if {([llength $argv] < 3) || ([llength $argv] > 4)} {usage}
+
+set vecFileName [lindex $argv 0]
+set prefix      [lindex $argv 1]
+set nodes       [lindex $argv 2]
+set cut  100
+
+if {[llength $argv] > 3} {
+	set numStages [lindex $argv 3]
+} else {
+	set numStages $nodes
+}
+
+set f [open $vecFileName w]
+for {set n 1} {$n <= $nodes} {incr n} {
+	set dsts {}
+	set stage 0
+	for {set i $n} {$i != $n - 1} {set i [expr ($i + 1) % $nodes]} {
+		if {$stage == $numStages} {break}
+		incr stage
+		if {$i == $nodes} {
+			lappend dsts 1
+		} else {
+			lappend dsts [expr $i + 1]
+		}
+	}
+	puts "**H_${n}_U1.app.dstSeqVecIdx = [expr $n -1]"
+	
+	set dstslen [ llength $dsts ] 
+	if {$dstslen <= $cut}  { 
+		puts $f "[expr $n -1]:   $dsts"
+	} else {
+		set nlines [expr {$dstslen / $cut}]
+		for {set k 0} {$k <= $nlines} {incr k} {      
+			set start [expr {$k * $cut}]
+			if  {($k == $nlines) && ([expr {$dstslen % $cut}] != 0) }   {
+				set end  $dstslen
+			} else {
+				set end [expr {($k * $cut) + $cut -1} ]
+			}
+			puts $f   "[expr $n -1]: [lrange $dsts $start $end] "
+		}
+	}
+}
+close $f
+exit 0

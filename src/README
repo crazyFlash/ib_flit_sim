@@ -1,0 +1,6 @@
+This directory holds the actual model code
+the modules.ini holds common parameters for the mode.
+I think we should have one for SDR one for DDR and one for QDR
+
+To update on new Omnet:
+opp_makemake -N -u Cmdenv -f -I../utils -w -o ib_macro_model

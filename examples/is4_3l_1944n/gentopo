@@ -1,0 +1,17 @@
+#!/bin/awk -f
+BEGIN{
+   for (l=0; l < 1944/18; l++) {
+      printf("MTS3600 SW-2-%d\n",l);
+      for (h = 0; h <18; h++) {
+          printf("   P%d -> Cougar H-%d P1\n", h+1, l*18+h+1);
+      }
+      L=l/3;
+      for (p=0;p < 18; p++) {
+          s=p/6;
+          P=(p % 6) +6*(l % 3) + 1;
+          printf("   P%d -> MIS5600 SWS_%d L%d/P%d\n", p+19, s, L+1,P);
+      }
+      print "\n";
+   }
+   exit
+}

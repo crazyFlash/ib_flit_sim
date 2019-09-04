@@ -1,0 +1,10 @@
+# Partial Tkenv config file -- see $HOME/.tkenvrc as well
+inspector "p2p_3h_2s.SW_1.port[0].ibuf.numBeingSent" "int" "1" "323x75+6+534"
+inspector "p2p_3h_2s.SW_2.port[2].vlarb.free credits on VL0" "cOutVector" "2" "398x348+449+16"
+inspector "p2p_3h_2s.SW_2.port[2]" "SwitchPort" "3" "660x253+8+129"
+inspector "p2p_3h_2s.SW_2.port[0].ibuf.numBeingSent" "int" "1" "325x75+6+643"
+inspector "p2p_3h_2s.SW_1.port[0].vlarb.free credits on VL0" "cOutVector" "2" "394x348+1010+-1"
+inspector "p2p_3h_2s.SW_1.port[0].vlarb" "IBVLArb" "3" "813x495+398+376"
+inspector "p2p_3h_2s.SW_2.port[1].ibuf.numBeingSent" "int" "1" "325x75+4+750"
+inspector "p2p_3h_2s" "p2p_3h_2s" "2" "565x399+491+254"
+

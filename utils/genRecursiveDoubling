@@ -1,0 +1,106 @@
+#!/bin/sh
+# the next line restarts using tclsh \
+	exec tclsh "$0" "$@"
+
+proc usage {} {
+	global argv0
+	puts "Usage: $argv0 \[-pgft\] <vecFilename> <num nodes>"
+	puts "Generates a vector file with RecursiveDoubling CCS "
+	exit 1
+}
+
+###########################################################################
+#
+# PROCEDURES
+#
+
+proc genRecursiveStage {stage nExtra nRecNodes} {
+	global DESTS
+	set delta [expr 1<<$stage]
+	for {set i 0} {$i < $nRecNodes} {incr i} {
+		set j [expr $i ^ $delta]
+		lappend DESTS($i) [expr $j + 1]
+	}
+	# extra nodes do nothing - send to themselves
+	for {set i 0} {$i < $nExtra} {incr i} {
+		set j [expr $i + $nRecNodes]
+		lappend DESTS($j) [expr $j + 1]
+	}
+}
+
+proc genFirstStage {nExtra nRecNodes} {
+	global DESTS
+	for {set i 0} {$i < $nExtra} {incr i} {
+		set j [expr $i + $nRecNodes]
+		lappend DESTS($j) [expr $i + 1]
+	}
+	# base node do nothing - send to themselves
+	for {set i 0} {$i < $nRecNodes} {incr i} {
+		lappend DESTS($i) [expr $i + 1]
+	}
+}
+
+proc genLastStage {nExtra nRecNodes} {
+	global DESTS
+	for {set i 0} {$i < $nExtra} {incr i} {
+		set j [expr $i + $nRecNodes]
+		lappend DESTS($i) [expr $j + 1]
+	}
+	# all nodes but the first nEwxtra do nothing - send to themselves
+	for {set i $nExtra} {$i < $nRecNodes + $nExtra} {incr i} {
+		lappend DESTS($i) [expr $i + 1]
+	}
+}
+
+###########################################################################
+#
+# MAIN FLOW
+# 
+set pgftMode 0
+if {[lindex $argv 0] == "-pgft"} {
+	set pgftMode 1
+}
+
+if {[llength $argv] != 2} {
+	usage
+}
+
+set vecFileName [lindex $argv 0]
+set nodes       [lindex $argv 1]
+set cut         100
+
+set f [open $vecFileName w]
+
+# number of stages
+set numRecStages [expr int(log($nodes)/log(2))]
+set nRecNodes    [expr 1<<$numRecStages]
+set nExtraNodes  [expr $nodes - $nRecNodes]
+
+genFirstStage $nExtraNodes $nRecNodes
+for {set s 0} {$s < $numRecStages} {incr s} {
+	genRecursiveStage $s $nExtraNodes $nRecNodes
+}
+genLastStage $nExtraNodes $nRecNodes
+
+for {set n 0} {$n < $nodes} {incr n} {
+	puts "**H_${n}_U1.app.dstSeqVecIdx = $n"
+	
+	set dsts $DESTS($n)
+	set dstslen [ llength $dsts ] 
+	if {$dstslen <= $cut}  { 
+		puts $f "$n:   $dsts"
+	} else {
+		set nlines [expr {$dstslen / $cut}]
+		for {set k 0} {$k <= $nlines} {incr k} {      
+			set start [expr {$k * $cut}]
+			if  {($k == $nlines) && ([expr {$dstslen % $cut}] != 0) }   {
+				set end  $dstslen
+			} else {
+				set end [expr {($k * $cut) + $cut -1} ]
+			}
+			puts $f   "$n: [lrange $dsts $start $end] "
+		}
+	}
+}
+close $f
+exit 0
