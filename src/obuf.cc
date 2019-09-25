@@ -85,6 +85,7 @@ void IBOutBuf::initialize()
   WATCH_VECTOR(FCTBS);
   WATCH_VECTOR(FCCL);
 
+  // default true
   if (Enabled) {
     // we do want to have a continous flow of MinTime
     p_minTimeMsg = new cMessage("minTime", IB_MINTIME_MSG);
@@ -128,6 +129,8 @@ void IBOutBuf::sendOutMessage(IBWireMsg *p_msg) {
   EV << "-I- " << getFullPath() << " sending msg:" << p_msg->getName() 
      << " at time " << simTime() <<endl;
 
+//  std::cout <<"sending message. Time: " <<simTime() <<"-----------------------------" <<endl;
+
   // track out going packets
   if ( p_msg->getKind() == IB_DATA_MSG ) {
     IBDataMsg *p_dataMsg = (IBDataMsg *)p_msg;
@@ -141,16 +144,29 @@ void IBOutBuf::sendOutMessage(IBWireMsg *p_msg) {
     FCTBS[p_msg->getVL()]++;
 
     flitsSources.collect(p_dataMsg->getSrcLid());
-  }
-  send(p_msg, "out");
 
+    std::cout <<getFullPath() <<". flitId: " <<p_dataMsg->getFlitSn() <<". packetLen:" <<p_dataMsg->getPacketLengthBytes()
+            <<". flitLen: " <<p_dataMsg->getByteLength() <<endl;
+  }
+
+//  IBDataMsg *da_msg = new IBDataMsg("testMsg");
+//  da_msg->setByteLength(64);
+  p_msg->setTimestamp(simTime());
+  simtime_t beforeTime = simTime();
+  std::cout <<getFullPath() <<"-------------------------outbuf. line 149.   currTime : " <<beforeTime <<". name: " <<p_msg->getName() <<endl;
+  send(p_msg, "out");
+  simtime_t afterTime = simTime();
+  std::cout <<getFullPath() <<"-------------------------outbuf. line 151. finishTime : " <<gate("out")->getTransmissionChannel()->getTransmissionFinishTime() <<endl;
+  std::cout <<getFullPath() <<"-------------------------outbuf. line 152. datarate : " <<gate("out")->getTransmissionChannel()->getNominalDatarate() <<endl;
   if ( ! p_popMsg->isScheduled() ) {
+      // 设置obuf 的连续发送，即发送完成则立即发送popPush消息
     scheduleAt(gate("out")->getTransmissionChannel()->getTransmissionFinishTime(), p_popMsg);
   }
 
   if (firstPktSendTime == 0)
     firstPktSendTime = simTime();
 
+  // 内置函数，获取字节数，向上取整
   totalBytesSent += p_msg->getByteLength();
 
 } // sendOutMessage
@@ -163,6 +179,7 @@ IBOutBuf::qMessage(IBDataMsg *p_msg) {
   //p_msg->setTimestamp(simTime());
   
   if ( p_popMsg->isScheduled() ) {
+      //当前还在排队，接收到了新消息则入队
     if ( qSize <= queue.getLength() ) {
         throw cRuntimeError("-E- %s  need to insert into a full Q. qSize:%d qLength:%d",
                 getFullPath().c_str(), qSize, queue.getLength());
@@ -176,6 +193,7 @@ IBOutBuf::qMessage(IBDataMsg *p_msg) {
   } else {
     // track the time this PACKET (all credits) spent in the Q
     // the last credit of a packet always
+      // 不需要等待，直接发送，vlarb直接发送发obuf，然后发送出去。
     if ( p_msg->getFlitSn() + 1 == p_msg->getPacketLength() ) {
       packetStoreHist.collect( simTime() - packetHeadTimeStamp );
     } else if ( p_msg->getFlitSn() == 0 ) {
@@ -334,12 +352,14 @@ void IBOutBuf::handleMinTime()
   isMinTimeUpdate = 1;
   // if we do not have any pop message - we need to create one immediatly
   if (! p_popMsg->isScheduled() ) {
+      // 这里做了一个pop消息的调度，但是加了1ns的延时。为什么加延时？？
     scheduleAt(simTime() + 1e-9, p_popMsg);
   }
   
   // we use the min time to collect Queue depth stats:
   qDepthHist.collect( queue.getLength() );
 
+  // 1us之后再次进行一次minTime 的消息。这里应该就是一个保持心跳的连接消息
   scheduleAt(simTime() + credMinTime_us*1e-6, p_minTimeMsg);
 } // handleMinTime
   
@@ -347,6 +367,7 @@ void IBOutBuf::handleMinTime()
 void IBOutBuf::handleRxCred(IBRxCredMsg *p_msg)
 {
   // update FCCL...
+  // 更新FCCL: flow control credit limit
   FCCL[p_msg->getVL()] = p_msg->getFCCL();
   delete p_msg;
 }

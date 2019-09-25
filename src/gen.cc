@@ -90,15 +90,17 @@ void IBGenerator::initPacketParams(IBAppMsg *p_msg, unsigned int pktIdx)
   std::cout <<"msgIndex: " <<p_msg->getPktIdx() <<endl;
 
   // length of last msg packet may be smaller
-  if (p_msg->getPktIdx() >= p_msg->getLenPkts()) {
+  if (p_msg->getPktIdx() >= p_msg->getLenPkts()- 1) { // index begin from 0
     // last packet
     //最后一个包，长度为消息总长度对MTU取模
     pktLen_B = p_msg->getLenBytes() % p_msg->getMtuBytes();
+    std::cout <<"-------------------->line 97. pktLen_B: " <<pktLen_B <<endl;
     if (pktLen_B == 0) 
       pktLen_B = p_msg->getMtuBytes();
   } else {
       //不是最后一个包，则每次都是一个MTU的长度
     pktLen_B = p_msg->getMtuBytes();
+    std::cout <<"-------------------->line 103. pktLen_B: " <<pktLen_B <<endl;
   }
   pktLen_F = (pktLen_B + flitSize_B - 1) / flitSize_B;      //在分片MTU的基础上再次细分了，分为几个FlitSzie
   p_msg->setPktLenBytes(pktLen_F*flitSize_B);
@@ -190,7 +192,7 @@ void IBGenerator::getNextAppMsg()
   unsigned int thisFlitIdx = p_msg->getFlitIdx();
   unsigned int thisPktIdx = p_msg->getPktIdx();
   unsigned int thisMsgIdx = p_msg->getMsgIdx();
-  unsigned int thisMsgLen = p_msg->getLenPkts();
+  unsigned int thisMsgLen = p_msg->getLenPkts();    //包数量
   unsigned int thisAppIdx = p_msg->getAppIdx();
   unsigned int thisPktDst = p_msg->getDstLid();
 
@@ -203,7 +205,7 @@ void IBGenerator::getNextAppMsg()
 
   p_cred->setSrcLid(srcLid);
   p_cred->setBitLength(flitSize_B*8);
-  p_cred->setByteLength(flitSize_B);
+  p_cred->setByteLength(flitSize_B);    //单条消息长度就是FlitSize
 
   p_cred->setDstLid(thisPktDst);
   p_cred->setSL(p_msg->getSQ());
@@ -214,9 +216,9 @@ void IBGenerator::getNextAppMsg()
   p_cred->setMsgIdx(thisMsgIdx);
   p_cred->setAppIdx(thisAppIdx);
   p_cred->setPktIdx(thisPktIdx);
-  p_cred->setMsgLen(thisMsgLen);
-  p_cred->setPacketLength(p_msg->getPktLenFlits());
-  p_cred->setPacketLengthBytes(p_msg->getPktLenBytes());
+  p_cred->setMsgLen(thisMsgLen);    //消息长度用包数量表示
+  p_cred->setPacketLength(p_msg->getPktLenFlits()); //包的flit数量
+  p_cred->setPacketLengthBytes(p_msg->getPktLenBytes());    //获取包的字节长度，flit数量*flitSize
 
   p_cred->setBeforeAnySwitch(true);
 
@@ -261,7 +263,11 @@ void IBGenerator::getNextAppMsg()
 
       // 发送APP消息，in门。。。这是从APP发送出去，还是发送回来APP啊？？？
       // 因为in是对接 APP 的，所以这个是发送回来给APP的消息，对外为out
-      send(p_msg, "in$o", curApp);
+      std::cout <<"currtime: " <<simTime() <<endl;
+      finish();
+//      send(p_msg, "in$o", curApp);
+
+
       appMsgs[curApp] = NULL;
     } else {
       p_msg->setPktIdx(thisPktIdx);
@@ -273,6 +279,7 @@ void IBGenerator::getNextAppMsg()
 }
 
 // arbitrate for next app, generate its FLIT and schedule next push
+// 看起来啥事儿没敢，
 void IBGenerator::genNextAppFLIT() 
 {
   // get the next application to work on
@@ -307,8 +314,10 @@ void IBGenerator::handleApp(IBAppMsg *p_msg){
   // decide what port it was provided on
   unsigned int a = p_msg->getArrivalGate()->getIndex();
 
-  std::cout <<"length: " <<p_msg->getLenBytes() <<"\t.MTU: " <<p_msg->getMtuBytes()
-          <<"\t.packetLength: " <<p_msg->getLenPkts() <<endl;
+//  ##########################################################################################################################
+  // VL初始为0
+//  std::cout <<"length: " <<p_msg->getLenBytes() <<"\t.MTU: " <<p_msg->getMtuBytes()
+//          <<"\t.packetLength: " <<p_msg->getLenPkts() <<"\t. VL: " <<p_msg->getVL() <<endl;
 
   // check that the app is empty or error
   if (appMsgs[a] != NULL) {
@@ -345,13 +354,17 @@ void IBGenerator::sendDataOut(IBDataMsg *p_msg){
   double delay_ns = ((double)par("popDlyPerByte"))*bytes;
 
   std::cout <<"---------------------Bytes: " <<bytes <<". deLays: " <<delay_ns
-          <<". popDlyPerByte: " <<(double)par("popDlyPerByte") <<"------------------" <<endl;
+          <<". popDlyPerByte: " <<(double)par("popDlyPerByte") <<". flitId: " <<p_msg->getFlitSn() <<"---------------" <<endl;
 
-  // 计算发送时延，这样没啥特别的呀
+  // 计算发送时延
   // time stamp to enable tracking time in Fabric
   p_msg->setInjectionTime(simTime()+delay_ns*1e-9);
   p_msg->setTimestamp(simTime()+delay_ns*1e-9);
   totalBytesSent += bytes;
+
+//  if(totalBytesSent >= (unsigned int)par("msgLength")){
+//      std::cout <<"toatlBytesSent: " <<totalBytesSent <<endl;
+//  }
 
   sendDelayed(p_msg, delay_ns*1e-9, "out");
 
@@ -376,6 +389,7 @@ void IBGenerator::handleSent(IBSentMsg *p_sent){
   // NOTE : since we LOCK the HoQ when asking if HoQ is free we 
   // must make sure we have something to send before we ask about it
 
+  std::cout <<"---------------get sent back! time: " <<simTime() <<endl;
   // 当前序号的消息判断队列是否为空，为空则表示已经发送，这条Send信息没啥用
   // 如果是非空，则需要执行发送
   if (!VLQ[vl].isEmpty()) {
@@ -418,6 +432,7 @@ void IBGenerator::handleMessage(cMessage *p_msg) {
 void IBGenerator::finish()
 {
   double oBW = totalBytesSent / (simTime() - firstPktSendTime);
+  std::cout <<"totalByteSent: " <<totalBytesSent <<" " <<" timeAmount: " <<(simTime() - firstPktSendTime) <<endl;
   EV << "STAT: " << getFullPath() << " Gen Output BW (B/s):" << oBW  << endl;
 }
 

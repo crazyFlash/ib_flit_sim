@@ -184,10 +184,8 @@ IBAppMsg *IBApp::getNewMsg()
     break;
   }
   
-  //包数量，不对啊，不能整除的后面还是作为一个包呀
-  msgLen_P = msgLen_B / msgMtuLen_B;
-  unsigned int tem = msgLen_B % msgMtuLen_B;
-  msgLen_P += ((tem==0)?0:1);
+  //包数量，不能整除的后面还是作为一个包呀
+  msgLen_P = (msgLen_B + msgMtuLen_B - 1) / msgMtuLen_B;
 
   //获取目的地
   // obtain the message destination

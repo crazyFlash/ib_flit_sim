@@ -209,6 +209,8 @@ int IBVLArb::isHoQFree(unsigned int pn, unsigned int vl)
 void IBVLArb::sendOutMessage(IBDataMsg *p_msg)
 {
   simtime_t delay = p_msg->getByteLength() * popDelayPerByte_s;
+
+  std::cout <<getFullPath() <<" delay: " <<delay <<endl;
   // we can only send if there is no such message as we use
   // it to flag the port is clear to send.
   if ( ! p_popMsg->isScheduled() ) {
@@ -223,12 +225,16 @@ void IBVLArb::sendOutMessage(IBDataMsg *p_msg)
   LastSentWasLast = (p_msg->getFlitSn() + 1 == p_msg->getPacketLength());
   
   if (!hcaArb) {
+      //判断是否可以立即发送，是否需要计算时延
+//------------------------------------------------------------------------------------------------------------------
+//    std::cout <<"-------------------------vlarb: line 227. send out----------------------" <<simTime() <<endl;
     simtime_t storeTime = simTime() - p_msg->getArrivalTime();
     simtime_t extraStoreTime = VSWDelay*1e-9 - storeTime;
     if (simTime() + extraStoreTime <= lastSendTime) {
       extraStoreTime = lastSendTime + 1e-9 - simTime();
     }
     if (extraStoreTime > 0) {
+        // 如果到达时间小于 VLArbiter所需时间，则不需要额外延时；否则，则产生等待时延
       lastSendTime = simTime() + extraStoreTime;
       sendDelayed(p_msg, extraStoreTime, "out");
     } else {
@@ -236,6 +242,8 @@ void IBVLArb::sendOutMessage(IBDataMsg *p_msg)
       send(p_msg, "out");
     }
   } else {
+      //HCA VLarb则直接发送
+//      std::cout <<"-------------------------HCA vlarb: line 243. send out----------------------" <<simTime() <<endl;
     send(p_msg, "out");
   }
   
@@ -596,6 +604,7 @@ void IBVLArb::arbitrate()
   unsigned int vl;
   
   // can not arbitrate if we are in a middle of send
+  // 上一个packet没有发送完成
   if (p_popMsg->isScheduled()) {
     EV << "-I- " << getFullPath() 
        << " can not arbitrate while packet is being sent" << endl;

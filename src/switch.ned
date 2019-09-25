@@ -105,6 +105,7 @@ module Switch
             port[p] <--> isw_port[p].port;
 
             // Loopback for inner switch ports in according ports array.
+            // 这个内部环回是干嘛的，不懂！！！
             isw_port[p].sw_port$o[p] --> isw_port[p].sw_port$i[p];
             isw_port[p].sw_sent_port$o[p] --> isw_port[p].sw_sent_port$i[p];
         }

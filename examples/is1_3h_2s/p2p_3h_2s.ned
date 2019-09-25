@@ -33,9 +33,9 @@ network p2p_3h_2s
                 port[3];
         }
     connections:
-        H_1.port <--> IB4XFDRWire <--> SW_2.port[0];
-        H_2.port <--> IB4XFDRWire <--> SW_2.port[1];
-        SW_2.port[2] <--> IB4XFDRWire <--> SW_1.port[1];
-        SW_1.port[0] <--> IB4XFDRWire <--> H_3.port;
+        H_1.port <--> IB4XEDRWire <--> SW_2.port[0];
+        H_2.port <--> IB4XEDRWire <--> SW_2.port[1];
+        SW_2.port[2] <--> IB4XEDRWire <--> SW_1.port[1];
+        SW_1.port[0] <--> IB4XEDRWire <--> H_3.port;
 }
 

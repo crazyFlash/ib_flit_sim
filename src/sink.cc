@@ -234,6 +234,9 @@ void IBSink::handleData(IBDataMsg *p_msg)
 		  EV << "-I- " << getFullPath() << " received last flit of message from src: "
 				 <<  p_msg->getSrcLid() << " app:" << p_msg->getAppIdx() << " msg: " << p_msg->getMsgIdx() << endl;
 		  outstandingMsgsData.erase(mt);
+
+		  std::cout <<"\n\n\n$$$$$$$$$$$$$totalTime: " <<simTime() - (*mI).second.firstFlitTime <<endl;
+		  finish();
 	  }
   }
 
@@ -320,6 +323,7 @@ void IBSink::handleMessage(cMessage *p_msg)
   int kind = p_msg->getKind();
 
   if ( kind == IB_DATA_MSG ) {
+//    std::cout <<getFullPath() <<" time: " <<simTime() <<endl;
     handleData((IBDataMsg *)p_msg);
   } else if ( kind == IB_POP_MSG ) {
     handlePop(p_msg);
@@ -364,6 +368,9 @@ void IBSink::finish()
   recordScalar("OO-IO-Packets-Ratio", 1.0*totOOPackets/totIOPackets);
   recordScalar("Num-SRCs", lastPktSnPerSrc.size());
   lastPktSnPerSrc.clear();
+
+  // to end up the simulation
+  endSimulation();
 }
 
 IBSink::~IBSink() {

@@ -210,18 +210,26 @@ void IBInBuf::updateVLAHoQ(short int portNum, short vl)
     // also may be required if the last delivery time is too close
     // and we must insert delay to avoid reordering
     simtime_t storeTime = simTime() - p_msg->getArrivalTime();
+    // storeTime为消息从到达到发送，在交换机中的滞留时间，即等待时间
+    // ISWDelay为处理时延
     simtime_t extraStoreTime = ISWDelay*1e-9 - storeTime;
     if (simTime() + extraStoreTime <= lastSendTime) {
       extraStoreTime = lastSendTime + 1e-9 - simTime();
     }
     if (extraStoreTime > 0) {
+        // 如果产生延时
       lastSendTime = simTime()+extraStoreTime;
+//      std::cout <<getFullPath() <<"  delay--------------->" <<"ibuf. line: 222. " <<simTime() <<endl;
       sendDelayed(p_msg, extraStoreTime, "out", portNum);
     } else {
+        // 没有产生额外延时
       lastSendTime = simTime();
+//      std::cout <<getFullPath() <<"--------------->" <<"ibuf. line: 227. " <<simTime() <<endl;
       send(p_msg, "out", portNum);
     }
   } else {
+//    std::cout <<getFullPath() <<"  HCA ibuf--------------->" <<"ibuf. line: 231. " <<simTime() <<endl;
+      // HCA buf直接发送
     send(p_msg, "out", portNum);
   }
 }
@@ -261,7 +269,13 @@ void IBInBuf::handlePush(IBWireMsg *p_msg)
   } else if (msgType == IB_DATA_MSG) {
     // Data Packet:
     IBDataMsg *p_dataMsg = (IBDataMsg *)p_msg;
-    
+    std::cout <<getFullPath() <<". firstTime: " <<p_msg->getTimestamp() <<". daterate: "
+            <<p_msg->getSenderGate()->getTransmissionChannel()->getNominalDatarate() <<endl;
+//    std::cout <<getFullPath() <<"dataRate: " <<p_msg->getArrivalGate()->getTransmissionChannel()->getNominalDatarate() <<endl;
+    std::cout <<getFullPath() <<" line273. time: " <<simTime() <<". filtID: " <<p_dataMsg->getFlitSn()
+            <<".  packetLen:" <<p_dataMsg->getPacketLengthBytes() <<".  packetNums:" <<p_dataMsg->getPacketLength()
+            <<". flitLen: " <<p_dataMsg->getByteLength() <<". name: " <<p_msg->getName() <<endl;
+
     // track the time of the packet in the switch
     p_dataMsg->setSwTimeStamp(simTime());
 
@@ -410,6 +424,7 @@ void IBInBuf::handleSent(IBSentMsg *p_msg)
   simpleCredFree(vl);
   
   // Only on switch ibuf we need to do the following...
+  // 只有是switch ibuf 才进行一下操作
   if (! hcaIBuf) {
 	// update the outstanding flits for this out-port
 	// HACK: assume the port index is the port num that is switch connectivity is N x N following port idx
@@ -429,7 +444,7 @@ void IBInBuf::handleSent(IBSentMsg *p_msg)
       numBeingSent--;
       EV << "-I- " << getFullPath() << " completed send. down to:" 
          << numBeingSent << " sends" << endl;
-
+      std::cout <<"\n\n******************I am in " <<getFullPath() <<"\n\n" <<endl;
       // inform all arbiters we drive
       int numOutPorts = gateSize("out");
       for (int pn = 0; pn < numOutPorts; pn++) {
@@ -467,6 +482,9 @@ void IBInBuf::handleMessage(cMessage *p_msg)
     if ( msgType == IB_SENT_MSG ) {
         handleSent((IBSentMsg *)p_msg);
     } else if ( (msgType == IB_DATA_MSG) || (msgType == IB_FLOWCTRL_MSG) ) {
+        if(msgType == IB_DATA_MSG){
+            std::cout <<getFullPath() <<"-------------" <<simTime() <<endl;
+        }
         handlePush((IBWireMsg*)p_msg);
     } else if (msgType == IB_TQ_LOAD_MSG) {
         handleTQLoadMsg((IBTQLoadUpdateMsg*)p_msg);

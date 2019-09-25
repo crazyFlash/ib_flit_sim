@@ -37,7 +37,7 @@ channel IBWire extends ned.DatarateChannel
 channel IB4XEDRWire extends IBWire
 {
       width = 4;                 // the output link width
-      speed = 50.0Gbps;          // the output speed
+      speed = 25.0Gbps;          // the output speed
       encode = 64.0/66;	//  64b/66b encoding
 }
 
@@ -46,6 +46,7 @@ channel IB4XFDRWire extends IBWire
       width = 4;                 // the output link width
       speed = 14.0Gbps;          // the output speed
       
+//      encode = 0.8;	//  64b/66b encoding
       encode = 64.0/66;	//  64b/66b encoding
 }
 
@@ -53,7 +54,7 @@ channel IB4XFDRWire extends IBWire
 channel IB4XQDRWire extends IBWire
 {
       width = 4;                 // the output link width
-      speed = 10Gbps;            // the output speed
+      speed = 5.0Gbps;            // the output speed
       
       encode = 0.8;
 }

@@ -37,6 +37,7 @@ OBJS = \
     $O/obuf.o \
     $O/pktfwd.o \
     $O/sink.o \
+    $O/switch.o \
     $O/vec_file.o \
     $O/vlarb.o \
     $O/ib_m.o
